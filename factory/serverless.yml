@@ -1,0 +1,77 @@
+service: factory
+
+custom:
+  tableUsers: ${opt:stage, self:provider.stage}-users
+  tableRooms: ${opt:stage, self:provider.stage}-rooms
+
+provider:
+  name: aws
+  runtime: nodejs4.3
+  stage: dev
+  region: us-east-1
+  environment:
+    TABLE_USERS: ${self:custom.tableUsers}
+    TABLE_ROOMS: ${self:custom.tableRooms}
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "dynamodb:*"
+        - "logs:CreateLogGroup"
+        - "logs:CreateLogStream"
+        - "logs:PutLogEvents"
+        - "apigateway:POST"
+      Resource:
+        - arn:aws:dynamodb:*:*:table/${self:custom.tableUsers}
+        - arn:aws:dynamodb:*:*:table/${self:custom.tableRooms}
+        - "arn:aws:apigateway:*"
+
+functions:
+  hello:
+    handler: handler.hello
+    events:
+      - http:
+          path: hello
+          method: get
+          cors: true
+  addUser:
+    handler: handler.addUser
+    events:
+      - http:
+          path: addUser
+          method: post
+          cors: true
+
+resources:
+  Resources:
+    UsersDynamoDbTable:
+      Type: 'AWS::DynamoDB::Table'
+      DeletionPolicy: Retain
+      Properties:
+        AttributeDefinitions:
+          -
+            AttributeName: name
+            AttributeType: S
+        KeySchema:
+          -
+            AttributeName: name
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: ${self:custom.tableUsers}
+    RoomsDynamoDbTable:
+      Type: 'AWS::DynamoDB::Table'
+      DeletionPolicy: Retain
+      Properties:
+        AttributeDefinitions:
+          -
+            AttributeName: name
+            AttributeType: S
+        KeySchema:
+          -
+            AttributeName: name
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: ${self:custom.tableRooms}
