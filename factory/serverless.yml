@@ -40,6 +40,13 @@ functions:
           path: addUser
           method: post
           cors: true
+  logIn:
+    handler: handler.logIn
+    events:
+      - http:
+          path: logIn
+          method: post
+          cors: true
 
 resources:
   Resources:

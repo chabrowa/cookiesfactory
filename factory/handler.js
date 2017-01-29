@@ -30,6 +30,42 @@ module.exports.addUser = (event, context, cb) => {
   });
 };
 
+module.exports.logIn = (event, context, cb) => {
+  const body = parseBody(event.body)
+  const params = {
+    TableName: process.env.TABLE_USERS,
+    AttributesToGet: [
+      "password"
+    ],
+    Key : {
+      "name" : body.nameValue
+    }
+  };
+  return dynamo.get(params, function(err, res) {
+    console.log(res)
+    if (err) { return cb(err) }
+    if (res.Item.password == body.passwordValue) {
+      cb(null, {
+        statusCode: 200,
+        headers: {
+          "Access-Control-Allow-Origin" : "*",
+          "Access-Control-Allow-Credentials" : true
+        },
+        body: JSON.stringify({success: true}),
+      })
+    } else {
+      cb(null, {
+        statusCode: 200,
+        headers: {
+          "Access-Control-Allow-Origin" : "*",
+          "Access-Control-Allow-Credentials" : true
+        },
+        body: JSON.stringify({success: false}),
+      })
+    }
+  });
+};
+
 module.exports.hello = (event, context, callback) => {
   const response = {
     statusCode: 200,

@@ -1,4 +1,5 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux'
+import {hashHistory} from 'react-router'
 import thunk from 'redux-thunk'
 
 export function incrementCounter () {
@@ -18,6 +19,23 @@ export function addUser(name, password) {
       })
       .then((res) => res.json())
       .then(console.log)
+      .catch(console.log)
+  }
+}
+
+export function logIn(name, password) {
+  return (dispatch) => {
+    return fetch('https://me902ggbm6.execute-api.us-east-1.amazonaws.com/dev/logIn', {
+        method: "POST",
+        body: 'nameValue=' + encodeURIComponent(name) +
+              '&passwordValue=' + encodeURIComponent(password)
+      })
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.success) {
+          hashHistory.push('/userpanel')
+        }
+      })
       .catch(console.log)
   }
 }

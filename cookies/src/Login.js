@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
-import {incrementCounter, decrementCounter, fetchHello, addUser} from './store';
+import {incrementCounter, decrementCounter, fetchHello, addUser, logIn} from './store';
 import {Link} from 'react-router'
 
 class Login extends Component {
@@ -19,7 +19,7 @@ class Login extends Component {
   }
   handleFormSubmit(event) {
     event.preventDefault()
-    this.props.dispatch(addUser(this.state.nameValue, this.state.passwordValue))
+    this.props.dispatch(logIn(this.state.nameValue, this.state.passwordValue))
   }
   render() {
     return (
@@ -30,13 +30,13 @@ class Login extends Component {
         <button onClick={() => this.props.dispatch(incrementCounter())}>INC</button>
         <button onClick={() => this.props.dispatch(decrementCounter())}>DEC</button>
         <form onSubmit={this.handleFormSubmit.bind(this)}>
-          NAME:
+          USERNAME:
           <input type="text" value={this.state.nameValue} onChange={this.handleNameChange.bind(this)}></input>
           PASSWORD:
           <input type="text" value={this.state.passwordValue} onChange={this.handlePasswordChange.bind(this)}></input>
-          <input type="submit" value="ADD" />
+          <input type="submit" value="Login" />
         </form>
-        <Link to="/createadvert">Add Advert</Link>
+        {/* <Link to="/createadvert">Register</Link> */}
       </div>
     );
   }

@@ -14,7 +14,7 @@ class CreateAdvert extends Component {
           Description: <textarea type="text" />
           <input type="submit" value="SAVE" />
         </form>
-        <Link to="/">Go Back</Link>
+        <Link to="/userpanel">Go Back</Link>
       </div>
     );
   }
