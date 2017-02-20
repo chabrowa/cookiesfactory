@@ -23,6 +23,28 @@ export function addUser(name, password) {
   }
 }
 
+export function addAdvert(title, description) {
+  return (dispatch) => {
+    return fetch('https://me902ggbm6.execute-api.us-east-1.amazonaws.com/dev/addAdvert', {
+        method: "POST",
+        body: 'title=' + encodeURIComponent(title) +
+              '&description=' + encodeURIComponent(description)
+      })
+      .then((res) => res.json())
+      .then(console.log)
+      .catch(console.log)
+  }
+}
+
+export function getAdverts() {
+  return (dispatch) => {
+    return fetch('https://me902ggbm6.execute-api.us-east-1.amazonaws.com/dev/getAdverts', {
+        method: "GET"})
+      .then((res) => res.json())
+      .catch(console.log)
+  }
+}
+
 export function logIn(name, password) {
   return (dispatch) => {
     return fetch('https://me902ggbm6.execute-api.us-east-1.amazonaws.com/dev/logIn', {

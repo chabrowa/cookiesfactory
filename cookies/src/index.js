@@ -14,8 +14,9 @@ ReactDOM.render(
     <Router history={hashHistory}>
       <Route path="/" component={App}>
         <Route path="createadvert" component={CreateAdvert} />
+        <IndexRoute component={UserPanel} />
         <Route path="userpanel" component={UserPanel} />
-        <IndexRoute component={Login}></IndexRoute>
+        {/* <IndexRoute component={Login}></IndexRoute> */}
       </Route>
     </Router>
   </Provider>,
